@@ -121,6 +121,7 @@ request and contributes it under the terms of `LICENSE.md`.
 
 ```sh
 node --test
+status=0; for skill in skills/*/; do skills-ref validate "$skill" || status=1; done; [ "$status" -eq 0 ]
 ```
 
 - The eval cases in `evals/` run under an evaluation tool of the contributor's choice, such as
@@ -143,12 +144,11 @@ node --test
 
 | Subject | Force | Rule |
 |---|---|---|
+| Format | shall | a skill follows the [Agent Skills specification](https://agentskills.io/specification), each of its rules at the force the specification gives it |
 | Place | shall | a skill lives in `skills/<name>/SKILL.md` |
-| Name | shall | `a-z` and `0-9` in words joined by single hyphens, at most 64 characters; the `name` key of `SKILL.md` equals the name of its directory |
-| Description | shall | the `description` key of `SKILL.md` says what the skill does and when an agent applies it, in at most 1024 characters |
-| Files | may | the directory of a skill holds, beside `SKILL.md`, the files the skill uses: documentation such as a vocabulary in `references/`, scripts in `scripts/`, templates and data in `assets/` |
-| File references | shall | `SKILL.md` refers to each file of its directory by its path inside the directory, one level deep |
-| Size | should | `SKILL.md` stays under 500 lines |
+| Name | shall | the letters and digits of the name are the ASCII `a-z` and `0-9` only, though the specification admits other lowercase letters |
+| Description | shall | the `description` key of `SKILL.md` says what the skill does and when an agent applies it |
+| File references | shall | `SKILL.md` refers to a file in `references/` or another directory of the skill by its path `<directory>/<file>`, alone in backticks, one level below `SKILL.md` |
 | Parent | shall | `SKILL.md` of a skill of the Life cycle level, a root, carries no metadata key `sdlc-refines`; `SKILL.md` of a skill of any other level carries `sdlc-refines` holding the name of the one skill it refines |
 | Chain | shall | following `sdlc-refines` from any skill reaches a root |
 | Level key | shall | `SKILL.md` carries the metadata key `sdlc-level` naming the level its chain of `sdlc-refines` places it at: `life-cycle` for a root, then `process`, `practice`, `language-or-tool` |
