@@ -52,4 +52,12 @@ function checkReferences(skills) {
   return problems;
 }
 
-module.exports = { readSkills, checkReferences };
+const needs = [];
+
+function check(root) {
+  return checkReferences(readSkills(path.join(root, 'skills')));
+}
+
+if (require.main === module) require('./run-as-script').runAsScript(check);
+
+module.exports = { needs, check, readSkills, checkReferences };

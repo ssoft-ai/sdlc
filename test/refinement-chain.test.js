@@ -4,7 +4,7 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { readCatalog, checkCatalog } = require('../scripts/ci/lint/refinement-chain');
+const { readCatalog, checkCatalog } = require('../scripts/tools/refinement-chain');
 
 const skill = (name, refines = null, text = '', level = null) => ({ name, refines, text, level });
 const root = skill('software-life-cycle', null, '', 'life-cycle');
@@ -79,8 +79,4 @@ test('reads each skill by its directory, with sdlc-refines and sdlc-level from t
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
-});
-
-test('finds no breach in the catalog of this repository', () => {
-  assert.deepStrictEqual(checkCatalog(readCatalog(path.join(__dirname, '..', 'skills'))), []);
 });

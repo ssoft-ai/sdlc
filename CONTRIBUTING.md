@@ -120,10 +120,11 @@ request and contributes it under the terms of `LICENSE.md`.
 ## Checks
 
 ```sh
-node --test
-status=0; for skill in skills/*/; do skills-ref validate "$skill" || status=1; done; [ "$status" -eq 0 ]
+node scripts/ci/check.js
 ```
 
+- The pipeline runs the same command on every pull request into `dev` or `main`; the command
+  names a tool it runs that is missing.
 - The eval cases in `evals/` run under an evaluation tool of the contributor's choice, such as
   `claude plugin eval .` for Claude Code; the results of a run shall not be committed. A comparison
   with the whole catalog and without it is not the measurement of one skill the Writing a
