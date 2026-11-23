@@ -4,16 +4,16 @@ const assert = require('node:assert');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { readSkills, checkReferences } = require('../scripts/ci/lint/file-references');
+const { check: checkReferencesIn } = require('../../scripts/tools/file-references');
 
 function check(files) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'file-references-'));
   try {
     for (const [file, text] of Object.entries(files)) {
-      fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
-      fs.writeFileSync(path.join(dir, file), text);
+      fs.mkdirSync(path.dirname(path.join(dir, 'skills', file)), { recursive: true });
+      fs.writeFileSync(path.join(dir, 'skills', file), text);
     }
-    return checkReferences(readSkills(dir));
+    return checkReferencesIn(dir);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
@@ -117,8 +117,4 @@ test('reads a directory without SKILL.md as no skill', () => {
 
 test('reads the body of a SKILL.md that ends at its closing frontmatter line', () => {
   assert.deepStrictEqual(check({ 'verification/SKILL.md': '---\nname: verification\ndescription: See `references/x.md`.\n---' }), []);
-});
-
-test('finds no broken file reference in the catalog of this repository', () => {
-  assert.deepStrictEqual(checkReferences(readSkills(path.join(__dirname, '..', 'skills'))), []);
 });

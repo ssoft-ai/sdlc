@@ -120,14 +120,9 @@ request and contributes it under the terms of `LICENSE.md`.
 ## Checks
 
 ```sh
-node --test
-status=0; for skill in skills/*/; do skills-ref validate "$skill" || status=1; done; [ "$status" -eq 0 ]
+node scripts/ci/check.js
 ```
 
-- The eval cases in `evals/` run under an evaluation tool of the contributor's choice, such as
-  `claude plugin eval .` for Claude Code; the results of a run shall not be committed. A comparison
-  with the whole catalog and without it is not the measurement of one skill the Writing a
-  skill section describes.
 - A test holds the behaviour of code or a relation between two artifacts; a test comparing
   one text with another shall not be written.
 
@@ -205,11 +200,13 @@ and which rules they reach, its issue sets.
 | Known responses | shall | beside every case, a response known to pass and one known to fail |
 | Indicator | may | a case may carry an indicator that the skill was loaded; the indicator reports and is no part of the verdict |
 | Kept cases | shall | a case stays in the suite even where a response without the skill passes it |
+| Results | shall | the results of a run are not committed |
 
 A skill may be measured by running its own cases with the skill and without it, or, for a
 change, before the change and after it. Each run shall load the ancestors of the measured skill
 along `sdlc-refines` up to its root and, in every run but the one without the skill, the skill
-itself, and no other skill, so that no other narrower skill shows in the score.
+itself, and no other skill, so that no other narrower skill shows in the score. A comparison
+with the whole catalog and without it is no such measurement.
 
 ## Hooks
 

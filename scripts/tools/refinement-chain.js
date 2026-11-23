@@ -72,4 +72,10 @@ function chainOf(skill, byName) {
   return { chain, cycle: false };
 }
 
-module.exports = { readCatalog, checkCatalog };
+function check(root) {
+  return checkCatalog(readCatalog(path.join(root, 'skills')));
+}
+
+if (require.main === module) require('../lib/run-as-script').runAsScript(check);
+
+module.exports = { check };
