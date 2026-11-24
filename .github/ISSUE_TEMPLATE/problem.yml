@@ -1,0 +1,85 @@
+name: Problem
+description: Behaviour of the catalog that needs correcting
+type: Bug
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        The title shall name the result the correction reaches, not the way to reach it: short,
+        imperative, capitalised, at most 80 characters, with no final period. The body shall hold
+        what was observed, with no plan of checks and no history of the discovery; the analysis,
+        the decision and the correction are recorded in the issue as it is handled. Example:
+        [problem](https://github.com/ssoft-ai/sdlc/blob/main/.github/examples/problem.md).
+  - type: input
+    id: item
+    attributes:
+      label: Item and version
+      description: Skill, rule or tool; the catalog version or commit.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Agent, model, OS - where the problem shows in a run.
+  - type: textarea
+    id: requirement
+    attributes:
+      label: Requirement
+      description: The rule of the catalog or the provision of a standard the behaviour departs from, quoted, where one exists.
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The input, then the steps, an action each.
+    validations:
+      required: true
+  - type: dropdown
+    id: reproducible
+    attributes:
+      label: Reproducible
+      options:
+        - always
+        - sometimes
+        - not reproduced
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Who is affected and how badly; a workaround, where one exists.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Transcript, log or output.
+  - type: input
+    id: observed-on
+    attributes:
+      label: Observed on
+      description: Date, where it is not the date of the issue.
+  - type: input
+    id: observed-by
+    attributes:
+      label: Observed by
+      description: Where it is not the author.
+  - type: textarea
+    id: similar
+    attributes:
+      label: Similar problems
+      description: Issues of similar problems reported before.
