@@ -9,7 +9,6 @@ const { spawnSync } = require('node:child_process');
 const REPO = path.join(__dirname, '..', '..');
 const CHECK = path.join('scripts', 'ci', 'check.js');
 const DESCRIPTION = 'description: A skill of the catalog the checks are run over.';
-// Without the validator, the frontmatter check names it.
 const NEEDS_VALIDATOR = { skip: spawnSync('skills-ref', ['--help'], { stdio: 'ignore' }).error ? 'skills-ref is not on PATH' : false };
 
 function makeCatalog(skills, testBody) {
@@ -26,9 +25,11 @@ function makeCatalog(skills, testBody) {
   return { base, root, elsewhere: path.join(base, 'elsewhere'), empty: path.join(base, 'empty') };
 }
 
-// A nested `node --test` runs only without the variable its parent run sets.
+const PARENT_TEST_RUN_VARIABLE = 'NODE_TEST_CONTEXT';
+const envForANestedTestRun = () => Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== PARENT_TEST_RUN_VARIABLE));
+
 function run(catalog, script, { path: searchPath, cwd = catalog.root } = {}) {
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => key !== 'NODE_TEST_CONTEXT'));
+  const env = envForANestedTestRun();
   if (searchPath !== undefined) {
     for (const key of Object.keys(env)) if (key.toUpperCase() === 'PATH') delete env[key];
     env.PATH = searchPath;
