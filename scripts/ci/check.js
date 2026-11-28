@@ -7,10 +7,9 @@ const ROOT = path.join(__dirname, '..', '..');
 const TOOLS = fs.readdirSync(path.join(__dirname, '..', 'tools')).filter((file) => file.endsWith('.js')).sort();
 const CHECKS = [['tests', ['--test']], ...TOOLS.map((file) => [path.basename(file, '.js'), [path.join('scripts', 'tools', file)]])];
 
-// Each check is a process of its own, so a check that throws or fails costs only itself.
-const runNodeIn = (root) => (args) => spawnSync(process.execPath, args, { cwd: root, stdio: 'inherit' });
+const runEachInItsOwnProcess = (root) => (args) => spawnSync(process.execPath, args, { cwd: root, stdio: 'inherit' });
 
-function main({ checks = CHECKS, run = runNodeIn(ROOT), log = console.error } = {}) {
+function main({ checks = CHECKS, run = runEachInItsOwnProcess(ROOT), log = console.error } = {}) {
   let passed = true;
   for (const [name, args] of checks) {
     const result = run(args);

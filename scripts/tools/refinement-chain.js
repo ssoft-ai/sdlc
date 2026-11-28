@@ -63,10 +63,9 @@ function chainOf(skill, byName) {
   const chain = [skill.name];
   let next = skill.refines;
   while (next && byName.has(next)) {
-    const cycle = chain.includes(next);
-    // The name met twice is kept, so the chain shows where it closes.
+    const closesTheChain = chain.includes(next);
     chain.push(next);
-    if (cycle) return { chain, cycle: true };
+    if (closesTheChain) return { chain, cycle: true };
     next = byName.get(next).refines;
   }
   return { chain, cycle: false };

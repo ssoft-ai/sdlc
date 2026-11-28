@@ -2,8 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-// A path under references/ is a file of the skill even where the directory is missing.
-const OWN_DIR = 'references';
+const ALWAYS_A_SKILL_DIR = 'references';
 const BYTE_ORDER_MARK = 0xfeff;
 
 function readSkills(skillsDir) {
@@ -32,20 +31,19 @@ function existsWithLetterCase(root, segments) {
 function checkReferences(skills) {
   const problems = [];
   for (const skill of skills) {
-    // Another first directory counts only where the skill has it, since a skill may name a
-    // user's file.
-    const ownDirs = new Set(
+    const dirsOfTheSkill = new Set(
       fs.readdirSync(skill.dir, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => entry.name.toLowerCase()),
     );
-    ownDirs.add(OWN_DIR);
+    dirsOfTheSkill.add(ALWAYS_A_SKILL_DIR);
+    const mayNameAUserFile = (segments) => !dirsOfTheSkill.has(segments[0].toLowerCase());
     const seen = new Set();
     for (const [, span] of skill.body.matchAll(/`([^`\s]+)`/g)) {
       const ref = span.split('#')[0].replace(/^\.\//, '');
       const segments = ref.split('/');
       const placeholder = /[*<>{}]/.test(ref);
-      if (segments.length < 2 || segments.at(-1) === '' || placeholder || !ownDirs.has(segments[0].toLowerCase()) || seen.has(ref)) continue;
+      if (segments.length < 2 || segments.at(-1) === '' || placeholder || mayNameAUserFile(segments) || seen.has(ref)) continue;
       seen.add(ref);
-      if (segments.length > 2) problems.push(`${skill.name}: refers to ${ref}, more than one level below SKILL.md`);
+      if (segments.length > 2) problems.push(`${skill.name}: refers to ${ref}, not directly inside a directory of the skill`);
       if (!existsWithLetterCase(skill.dir, segments)) problems.push(`${skill.name}: refers to ${ref}, which does not exist`);
     }
   }

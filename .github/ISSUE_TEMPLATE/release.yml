@@ -1,0 +1,31 @@
+name: Release
+description: The release of a version of the catalog
+type: Task
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        The title shall read `Release version <version>`. The body shall hold no plan of checks.
+        Example: [release](https://github.com/ssoft-ai/sdlc/blob/main/.github/examples/release.md).
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The version to release, `<major>.<minor>.<patch>`.
+    validations:
+      required: true
+  - type: textarea
+    id: changes
+    attributes:
+      label: Changes
+      description: What the release brings to a user, briefly; `CHANGELOG.md` holds the entries.
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      description: A checkbox per condition `Given ..., when ..., then ...`, observed before the release merges.
+      placeholder: "- [ ] Given ..., when ..., then ..."
+    validations:
+      required: true

@@ -1,0 +1,53 @@
+name: Enhancement
+description: A new or changed skill, rule or tool
+type: Feature
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        The title shall name the requested result, not the way to reach it: short, imperative,
+        capitalised, at most 80 characters, with no final period. The body shall hold no plan of
+        checks and no history of the discovery; the evaluation and the decision are recorded in
+        the issue as it is handled. Example:
+        [enhancement](https://github.com/ssoft-ai/sdlc/blob/main/.github/examples/enhancement.md).
+  - type: textarea
+    id: item
+    attributes:
+      label: Requested item
+      description: The skill, rule or tool to add or change.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What the item does after the change.
+    validations:
+      required: true
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justification
+      description: What is missing today and what that costs.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: The parts of the catalog the change reaches; what stays out.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Assumptions and constraints
+      description: What the change takes as given, and what limits it.
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      description: A checkbox per condition `Given ..., when ..., then ...`, observed in what the work delivers.
+      placeholder: "- [ ] Given ..., when ..., then ..."
+    validations:
+      required: true

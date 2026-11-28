@@ -46,7 +46,7 @@ test('reports a file under references/ where the skill has no such directory', (
 
 test('reports a path that runs through a file', () => {
   assert.deepStrictEqual(check({ 'verification/SKILL.md': skillMd('See `references/process.md/x`.\n'), ...withFile }), [
-    'verification: refers to references/process.md/x, more than one level below SKILL.md',
+    'verification: refers to references/process.md/x, not directly inside a directory of the skill',
     'verification: refers to references/process.md/x, which does not exist',
   ]);
 });
@@ -55,10 +55,10 @@ test('leaves alone a directory named with its trailing slash', () => {
   assert.deepStrictEqual(check({ 'verification/SKILL.md': skillMd('Put the notes in `references/`.\n'), ...withFile }), []);
 });
 
-test('reports a reference more than one level below SKILL.md', () => {
+test('reports a reference not directly inside a directory of the skill', () => {
   assert.deepStrictEqual(
     check({ 'verification/SKILL.md': skillMd('See `references/deep/process.md`.\n'), 'verification/references/deep/process.md': 'P.\n' }),
-    ['verification: refers to references/deep/process.md, more than one level below SKILL.md'],
+    ['verification: refers to references/deep/process.md, not directly inside a directory of the skill'],
   );
 });
 
